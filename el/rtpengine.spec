@@ -121,7 +121,6 @@ install -D -p -m755 utils/%{binname}-get-table %{buildroot}%{_sbindir}/%{binname
 # Install recording daemon
 %if 0%{?with_transcoding} > 0
 install -D -p -m755 recording-daemon/%{binname}-recording %{buildroot}%{_sbindir}/%{binname}-recording
-mkdir -p %{buildroot}%{_var}/lib/%{binname}-recording
 %endif
 
 ## Install the init.d script and configuration file
@@ -150,6 +149,7 @@ install -D -p -m644 el/%{binname}-recording.sysconfig \
 	%{buildroot}%{_sysconfdir}/sysconfig/%{binname}-recording
 %endif
 mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
+mkdir -p %{buildroot}%{_var}/lib/%{binname}-recording
 mkdir -p %{buildroot}%{_var}/spool/%{binname}
 
 # Install config files
@@ -245,13 +245,12 @@ true
 %{_initrddir}/%{name}
 %endif
 %config(noreplace) %{_sysconfdir}/sysconfig/%{binname}
-%attr(0750,%{name},%{name}) %dir %{_sharedstatedir}/%{name}
 # default config
 %config(noreplace) %{_sysconfdir}/%{binname}/%{binname}.conf
 # spool directory
 %attr(0750,%{name},%{name}) %dir %{_var}/spool/%{binname}
 # recording directory
-%attr(0750,%{name},%{name}) %dir %{_var}/lib/%{binname}-recording
+%attr(0750,%{name},%{name}) %dir %{_sharedstatedir}/%{binname}-recording
 # Documentation
 %doc LICENSE README.md debian/changelog debian/copyright
 
