@@ -10,7 +10,8 @@ User=ngcp-rtpengine
 Group=ngcp-rtpengine
 AmbientCapabilities=CAP_NET_ADMIN CAP_SYS_NICE
 LimitNOFILE=150000
-PIDFile=/var/run/rtpengine/rtpengine.pid
+RuntimeDirectory=rtpengine
+PIDFile=/run/rtpengine/rtpengine.pid
 ExecStartPre=+/usr/sbin/ngcp-rtpengine-iptables-setup start
 ExecStart=/usr/sbin/rtpengine --config-file=${CFG_FILE} --pidfile=${PID_FILE}
 ExecStopPost=+/usr/sbin/ngcp-rtpengine-iptables-setup stop
