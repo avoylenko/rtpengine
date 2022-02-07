@@ -6,7 +6,7 @@ After=network-online.target
 Type=forking
 Environment=CFG_FILE=/etc/rtpengine/rtpengine.conf
 EnvironmentFile=/etc/sysconfig/rtpengine
-PIDFile=/run/rtpengine.pid
+PIDFile=/run/rtpengine/rtpengine.pid
 ExecStartPre=/usr/sbin/ngcp-rtpengine-iptables-setup start
 ExecStart=/usr/sbin/rtpengine --config-file=${CFG_FILE} --pidfile=${PID_FILE}
 ExecStopPost=/usr/sbin/ngcp-rtpengine-iptables-setup stop
