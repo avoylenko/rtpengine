@@ -159,6 +159,10 @@ install -D -p -m644 etc/%{binname}-recording.conf \
 	%{buildroot}%{_sysconfdir}/%{binname}/%{binname}-recording.conf
 %endif
 
+# Seperate run directory
+mkdir -p %{buildroot}%{_rundir}/%{binname}
+mkdir -p %{buildroot}%{_rundir}/%{binname}-recording
+
 # Install the iptables plugin
 install -D -p -m755 iptables-extension/libxt_RTPENGINE.so \
 	%{buildroot}/%{_lib}/xtables/libxt_RTPENGINE.so
@@ -249,7 +253,9 @@ true
 %config(noreplace) %{_sysconfdir}/%{binname}/%{binname}.conf
 # Documentation
 %doc LICENSE README.md debian/changelog debian/copyright
-
+# Run
+%attr(0750,%{name},%{name}) %dir %{_rundir}/%{binname}
+%attr(0750,%{name},%{name}) %dir %{_rundir}/%{binname}-recording
 
 %files kernel
 /%{_lib}/xtables/libxt_RTPENGINE.so
