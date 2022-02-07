@@ -121,6 +121,7 @@ install -D -p -m755 utils/%{binname}-get-table %{buildroot}%{_sbindir}/%{binname
 # Install recording daemon
 %if 0%{?with_transcoding} > 0
 install -D -p -m755 recording-daemon/%{binname}-recording %{buildroot}%{_sbindir}/%{binname}-recording
+mkdir -p %{buildroot}%{_var}/lib/%{binname}-recording
 %endif
 
 ## Install the init.d script and configuration file
@@ -158,10 +159,6 @@ install -D -p -m644 etc/%{binname}.conf \
 install -D -p -m644 etc/%{binname}-recording.conf \
 	%{buildroot}%{_sysconfdir}/%{binname}/%{binname}-recording.conf
 %endif
-
-# Seperate run directory
-mkdir -p %{buildroot}%{_rundir}/%{binname}
-mkdir -p %{buildroot}%{_rundir}/%{binname}-recording
 
 # Install the iptables plugin
 install -D -p -m755 iptables-extension/libxt_RTPENGINE.so \
@@ -251,11 +248,10 @@ true
 %attr(0750,%{name},%{name}) %dir %{_sharedstatedir}/%{name}
 # default config
 %config(noreplace) %{_sysconfdir}/%{binname}/%{binname}.conf
+# spool directory
+%attr(0750,%{name},%{name}) %dir %{_var}/spool/%{binname}
 # Documentation
 %doc LICENSE README.md debian/changelog debian/copyright
-# Run
-%attr(0750,%{name},%{name}) %dir %{_rundir}/%{binname}
-%attr(0750,%{name},%{name}) %dir %{_rundir}/%{binname}-recording
 
 %files kernel
 /%{_lib}/xtables/libxt_RTPENGINE.so
@@ -279,8 +275,8 @@ true
 %config(noreplace) %{_sysconfdir}/sysconfig/%{binname}-recording
 # Default config
 %config(noreplace) %{_sysconfdir}/%{binname}/%{binname}-recording.conf
-# spool directory
-%attr(0750,%{name},%{name}) %dir %{_var}/spool/%{binname}
+# recording directory
+%attr(0750,%{name},%{name}) %dir %{_var}/lib/%{binname}-recording
 %endif
 
 %changelog
